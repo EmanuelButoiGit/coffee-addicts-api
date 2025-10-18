@@ -1,4 +1,4 @@
-package com.emanuel.coffee.addicts;
+package com.emanuel.coffee.addicts.objects;
 
 import java.time.LocalDateTime;
 
