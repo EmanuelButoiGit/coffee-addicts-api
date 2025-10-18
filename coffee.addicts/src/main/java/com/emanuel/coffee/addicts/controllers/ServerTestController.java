@@ -1,5 +1,6 @@
-package com.emanuel.coffee.addicts;
+package com.emanuel.coffee.addicts.controllers;
 
+import com.emanuel.coffee.addicts.objects.ServerTest;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 

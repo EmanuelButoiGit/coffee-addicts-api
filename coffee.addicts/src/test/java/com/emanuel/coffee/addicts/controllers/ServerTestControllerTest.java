@@ -1,5 +1,7 @@
-package com.emanuel.coffee.addicts;
+package com.emanuel.coffee.addicts.controllers;
 
+import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
+import com.emanuel.coffee.addicts.objects.ServerTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,12 @@ class ServerTestControllerTest {
     @Test
     void testServerApp(){
         //Assume
-        ServerTest expectedServerTest = new ServerTest();
+        final ServerTest expectedServerTest = new ServerTest();
         expectedServerTest.setStatus("The app is on!");
         expectedServerTest.setDate(LocalDateTime.now().toString());
 
         // Act
-        ServerTest result = graphQlTester
+        final ServerTest result = graphQlTester
                 .documentName("testServer")
                 .execute()
                 .path("testServer")
