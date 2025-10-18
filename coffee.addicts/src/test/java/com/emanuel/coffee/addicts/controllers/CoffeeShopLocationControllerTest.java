@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
 import java.util.List;
+import java.util.Set;
 
 @GraphQlTest(CoffeeShopLocationController.class)
 class CoffeeShopLocationControllerTest {
@@ -28,7 +29,7 @@ class CoffeeShopLocationControllerTest {
         expectedLocation.setX(1.0);
         expectedLocation.setY(2.0);
         Mockito.when(coffeeShopLocationService.getAllLocations())
-                .thenReturn(List.of(expectedLocation));
+                .thenReturn(Set.of(expectedLocation));
 
         // Act
         final List<CoffeeShopLocation> result = graphQlTester

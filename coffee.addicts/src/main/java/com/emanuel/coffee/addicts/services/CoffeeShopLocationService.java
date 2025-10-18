@@ -10,27 +10,26 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CoffeeShopLocationService {
     private static final String CSV_URL = "https://raw.githubusercontent.com/Agilefreaks/test_oop/master/coffee_shops.csv";
     private static final Logger logger = LoggerFactory.getLogger(CoffeeShopLocationService.class);
-    public List<CoffeeShopLocation> getAllLocations() throws CsvReaderException {
+    public Set<CoffeeShopLocation> getAllLocations() throws CsvReaderException {
         final RestTemplate restTemplate = new RestTemplate();
         final String csvData = restTemplate.getForObject(CSV_URL, String.class);
-        final List<CoffeeShopLocation> coffeeShopLocations = new ArrayList<>();
+        final Set<CoffeeShopLocation> coffeeShopLocations = new HashSet<>();;
         return getCoffeeShopLocations(csvData, coffeeShopLocations);
     }
 
-    private List<CoffeeShopLocation> getCoffeeShopLocations(String csvData, List<CoffeeShopLocation> coffeeShopLocations) throws CsvReaderException {
+    public Set<CoffeeShopLocation> getCoffeeShopLocations(String csvData, Set<CoffeeShopLocation> coffeeShopLocations)
+            throws CsvReaderException {
         try (CSVReader reader = new CSVReader(new StringReader(csvData))) {
             String[] line;
             while ((line = reader.readNext()) != null) {
                 if (line.length != 3) {
-                    final String errorMessage = "Skip malformed line " + String.join(",", line);
-                    logger.error(errorMessage);
+                    logger.warn("Skipping malformed or header line: {}", String.join(",", line));
                     continue;
                 }
                 extractCoffeeShopLocations(coffeeShopLocations, line);
@@ -40,19 +39,19 @@ public class CoffeeShopLocationService {
             logger.error(errorMessage, e);
             throw new CsvReaderException(errorMessage, e);
         }
-
         return coffeeShopLocations;
     }
 
-    private void extractCoffeeShopLocations(List<CoffeeShopLocation> coffeeShopLocations, String[] line) {
+    private void extractCoffeeShopLocations(Set<CoffeeShopLocation> coffeeShopLocations, String[] line) {
         try {
             final String name = line[0].trim();
             final double x = Double.parseDouble(line[1].trim());
             final double y = Double.parseDouble(line[2].trim());
             coffeeShopLocations.add(new CoffeeShopLocation(name, x, y));
         } catch (NumberFormatException e) {
-            final String errorMessage = "Skip malformed line, the columns are not properly written (invalid coordinates) " + String.join(",", line);
-            logger.error(errorMessage);
+            logger.warn("Skipping line with invalid coordinates: {}", String.join(",", line));
+        } catch (Exception e) {
+            logger.error("Unexpected error while processing line: {}", String.join(",", line), e);
         }
     }
 }

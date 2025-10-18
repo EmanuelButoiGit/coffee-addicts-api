@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class CoffeeShopLocationController {
@@ -21,7 +22,7 @@ public class CoffeeShopLocationController {
     }
 
     @QueryMapping
-    public List<CoffeeShopLocation> getAllLocations() throws CsvReaderException {
+    public Set<CoffeeShopLocation> getAllLocations() throws CsvReaderException {
         return coffeeShopLocationService.getAllLocations();
     }
 }
