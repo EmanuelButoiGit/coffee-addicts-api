@@ -1,0 +1,6 @@
+query testServer{
+    testServer {
+        status
+        date
+    }
+}

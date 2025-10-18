@@ -1,0 +1,8 @@
+type Query {
+    testServer: ServerTest
+}
+
+type ServerTest {
+    status: String
+    date: String
+}
