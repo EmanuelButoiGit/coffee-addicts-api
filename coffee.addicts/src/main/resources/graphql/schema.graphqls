@@ -2,6 +2,7 @@ type Query {
     testServer: ServerTest
     getAllFakeLocations: [CoffeeShopLocation]
     getAllLocations: [CoffeeShopLocation]
+    getLocationsBasedOnCoordinates(x: Float!, y: Float!): [CoffeeShopLocation]
 }
 
 type ServerTest {
