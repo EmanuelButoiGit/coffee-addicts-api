@@ -2,7 +2,6 @@ package com.emanuel.coffee.addicts.controllers;
 
 import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
 import com.emanuel.coffee.addicts.services.CoffeeShopLocationService;
-import com.emanuel.coffee.addicts.services.CsvReaderException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,7 +21,7 @@ class CoffeeShopLocationControllerTest {
     private CoffeeShopLocationService coffeeShopLocationService;
 
     @Test
-    void getAllLocations() throws CsvReaderException {
+    void getAllLocations() {
         // Arrange
         final CoffeeShopLocation expectedLocation = new CoffeeShopLocation();
         expectedLocation.setName("Ted's Coffee");
