@@ -2,7 +2,6 @@ package com.emanuel.coffee.addicts.controllers;
 
 import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
 import com.emanuel.coffee.addicts.services.CoffeeShopLocationService;
-import com.emanuel.coffee.addicts.services.CsvReaderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class CoffeeShopLocationController {
     }
 
     @QueryMapping
-    public Set<CoffeeShopLocation> getAllLocations() throws CsvReaderException {
+    public Set<CoffeeShopLocation> getAllLocations() {
         return coffeeShopLocationService.getAllLocations();
     }
 }
