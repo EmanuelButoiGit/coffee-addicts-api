@@ -16,14 +16,23 @@ import java.util.*;
 public class CoffeeShopLocationService {
     private static final String CSV_URL = "https://raw.githubusercontent.com/Agilefreaks/test_oop/master/coffee_shops.csv";
     private static final Logger logger = LoggerFactory.getLogger(CoffeeShopLocationService.class);
-    public Set<CoffeeShopLocation> getAllLocations() {
-        final RestTemplate restTemplate = new RestTemplate();
-        final String csvData = restTemplate.getForObject(CSV_URL, String.class);
-        final Set<CoffeeShopLocation> coffeeShopLocations = new HashSet<>();
-        return parseCvsLocations(csvData, coffeeShopLocations);
+    private final RestTemplate restTemplate;
+
+    public CoffeeShopLocationService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public Set<CoffeeShopLocation> parseCvsLocations(String csvData, Set<CoffeeShopLocation> coffeeShopLocations) {
+    public Set<CoffeeShopLocation> getAllLocations() {
+        final String csvData = restTemplate.getForObject(CSV_URL, String.class);
+        final Set<CoffeeShopLocation> coffeeShopLocations = new HashSet<>();
+        return parseCsvLocations(csvData, coffeeShopLocations);
+    }
+
+    public Set<CoffeeShopLocation> parseCsvLocations(String csvData, Set<CoffeeShopLocation> coffeeShopLocations) {
+        if (csvData == null || csvData.isEmpty()) {
+            logger.warn("CSV data is empty or null");
+            return coffeeShopLocations;
+        }
         try (CSVReader reader = new CSVReader(new StringReader(csvData))) {
             String[] line;
             while ((line = reader.readNext()) != null) {
