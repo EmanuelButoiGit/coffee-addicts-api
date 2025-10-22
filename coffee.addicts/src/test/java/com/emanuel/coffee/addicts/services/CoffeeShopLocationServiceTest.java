@@ -26,7 +26,7 @@ class CoffeeShopLocationServiceTest {
     @BeforeEach
     void setUp() {
         restTemplateMock = Mockito.mock(RestTemplate.class);
-        CsvDataFetcherService csvDataFetcherService = new CsvDataFetcherService(restTemplateMock);
+        CsvDataFetcherService csvDataFetcherService = new CsvDataFetcherService(restTemplateMock, CSV_URL);
         CsvParserService csvParserService = new CsvParserService();
         coffeeShopLocationService = new CoffeeShopLocationService(csvDataFetcherService, csvParserService);
     }
