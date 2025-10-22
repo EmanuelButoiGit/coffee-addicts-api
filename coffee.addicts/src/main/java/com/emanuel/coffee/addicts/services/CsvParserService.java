@@ -29,8 +29,9 @@ public class CsvParserService {
                 addLocation(coffeeShopLocations, line);
             }
         } catch (IOException | CsvValidationException e) {
-            final String errorMessage = "Something went wrong when reading the CSV file";
-            logger.error(errorMessage, e);
+            logger.error("CSV reading or parsing failed", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error while parsing CSV", e);
         }
         return coffeeShopLocations;
     }

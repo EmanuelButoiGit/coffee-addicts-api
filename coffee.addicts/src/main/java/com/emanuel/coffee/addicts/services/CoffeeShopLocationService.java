@@ -26,6 +26,7 @@ public class CoffeeShopLocationService {
     }
 
     public List<CoffeeShopLocation> getLocationsBasedOnCoordinates(double x, double y) {
+        validateCoordinate(x, y);
         final Set<CoffeeShopLocation> locationSet = getAllLocations();
         if (locationSet.isEmpty()) {
             return Collections.emptyList();
@@ -39,12 +40,13 @@ public class CoffeeShopLocationService {
                 continue;
             }
             try {
+                validateCoordinate(location.getX(), location.getY());
                 final double distance = calculateDistance(x, y, location.getX(), location.getY());
                 resultMap.add(new Result(distance, i));
             } catch (NullPointerException | IllegalArgumentException e) {
                 logger.warn("Skipping invalid location at index {}: {}", i, e.getMessage());
             } catch (Exception e) {
-                logger.error("Something went wrong..", e);
+                logger.error("Error calculating distance for location at index {}: {}", i, location, e);
             }
         }
         resultMap.sort(Comparator.comparingDouble(Result::distance));
@@ -53,6 +55,14 @@ public class CoffeeShopLocationService {
             nearestLocations.add(locations.get(resultMap.get(i).position()));
         }
         return nearestLocations;
+    }
+
+    private void validateCoordinate(double x, double y) {
+        if (Double.isNaN(x) ||Double.isNaN(y)
+                || Double.isInfinite(x) || Double.isInfinite(y)
+                || Math.abs(x) > Double.MAX_VALUE || Math.abs(y) > Double.MAX_VALUE) {
+            throw new IllegalArgumentException("Invalid coordinates: {x = + " + x + ", y = " + y + "}");
+        }
     }
 
     public double calculateDistance(double x, double y, double locationX, double locationY) {

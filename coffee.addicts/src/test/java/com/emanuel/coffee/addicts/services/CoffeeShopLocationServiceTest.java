@@ -94,33 +94,44 @@ class CoffeeShopLocationServiceTest {
     }
 
     @Test
-    void getLocationsBasedOnCoordinates_InputFaultTolerance() throws IOException {
-        // Arrange
+    void getLocationsBasedOnCoordinates_BadInput() throws IOException {
         mockCsvResponse("GitHubCsv.csv");
-        final double[][] coordinates = {
-                {0.0, 0.0},
+        final double[][] faultyCoordinates = {
                 {Double.NaN, -122.4},
                 {47.6, Double.NaN},
                 {Double.POSITIVE_INFINITY, 10.0},
                 {Double.NEGATIVE_INFINITY, -10.0},
+        };
+
+        for (double[] coord : faultyCoordinates) {
+            final double x = coord[0];
+            final double y = coord[1];
+            assertThrows(IllegalArgumentException.class,
+                    () -> coffeeShopLocationService.getLocationsBasedOnCoordinates(x, y),
+                    "Expected IllegalArgumentException for invalid coordinates: x=" + x + ", y=" + y);
+
+        }
+    }
+    @Test
+    void getLocationsBasedOnCoordinates_GoodInput() throws IOException {
+        mockCsvResponse("GitHubCsv.csv");
+        final double[][] nonFaultyCoordinates = {
+                {0.0, 0.0},
                 {9999999.0, -9999999.0},
                 {-9999999.0, 9999999.0},
                 {Double.MAX_VALUE, Double.MIN_VALUE},
                 {Double.MIN_NORMAL, -Double.MIN_NORMAL}
         };
 
-        for (double[] coord : coordinates) {
-            double x = coord[0];
-            double y = coord[1];
-
-            // Act
+        for (double[] coord : nonFaultyCoordinates) {
+            final double x = coord[0];
+            final double y = coord[1];
             final List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(x, y);
-
-            // Assert
-            assertNotNull(result, "Result was null for coordinates (" + x + ", " + y + ")");
+            assertNotNull(result);
             assertFalse(result.isEmpty());
         }
     }
+
     private record CsvTestCase(String fileName, boolean expectEmpty) {}
 
     private Stream<CsvTestCase> csvTestCases() {
