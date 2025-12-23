@@ -13,6 +13,9 @@ import java.util.Set;
 
 @Service
 public class CsvParserService {
+    private static final int NAME_INDEX = 0;
+    private static final int X_INDEX = 1;
+    private static final int Y_INDEX = 2;
     private static final Logger logger = LoggerFactory.getLogger(CsvParserService.class);
     public Set<CoffeeShopLocation> parseCsvLocations(String csvData, Set<CoffeeShopLocation> coffeeShopLocations) {
         if (csvData == null || csvData.isEmpty()) {
@@ -38,9 +41,9 @@ public class CsvParserService {
 
     private void addLocation(Set<CoffeeShopLocation> coffeeShopLocations, String[] line) {
         try {
-            final String name = line[0].trim();
-            final double x = Double.parseDouble(line[1].trim());
-            final double y = Double.parseDouble(line[2].trim());
+            final String name = line[NAME_INDEX].trim();
+            final double x = Double.parseDouble(line[X_INDEX].trim());
+            final double y = Double.parseDouble(line[Y_INDEX].trim());
             coffeeShopLocations.add(new CoffeeShopLocation(name, x, y));
         } catch (NumberFormatException e) {
             logger.warn("Skipping line with invalid coordinates: {}", String.join(",", line));
