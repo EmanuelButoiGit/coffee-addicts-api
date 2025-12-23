@@ -33,6 +33,11 @@ public class CoffeeShopLocationService {
         }
         final List<CoffeeShopLocation> locations = new ArrayList<>(locationSet);
         List<Result> resultMap = new ArrayList<>();
+        computeResultMap(x, y, locations, resultMap);
+        return getNearestLocations(locations, resultMap);
+    }
+
+    private void computeResultMap(double x, double y, List<CoffeeShopLocation> locations, List<Result> resultMap) {
         for (int i = 0; i < locations.size(); i++) {
             final CoffeeShopLocation location = locations.get(i);
             if (location == null) {
@@ -49,6 +54,9 @@ public class CoffeeShopLocationService {
                 logger.error("Error calculating distance for location at index {}: {}", i, location, e);
             }
         }
+    }
+
+    private List<CoffeeShopLocation> getNearestLocations(List<CoffeeShopLocation> locations, List<Result> resultMap) {
         resultMap.sort(Comparator.comparingDouble(Result::distance));
         List<CoffeeShopLocation> nearestLocations = new ArrayList<>();
         for (int i = 0; i < Math.min(3, resultMap.size()); i++) {
@@ -58,9 +66,12 @@ public class CoffeeShopLocationService {
     }
 
     private void validateCoordinate(double x, double y) {
-        if (Double.isNaN(x) ||Double.isNaN(y)
-                || Double.isInfinite(x) || Double.isInfinite(y)
-                || Math.abs(x) > Double.MAX_VALUE || Math.abs(y) > Double.MAX_VALUE) {
+        final boolean isCoordinateNotANumber = Double.isNaN(x) || Double.isNaN(y);
+        final boolean isCoordinateInfinite = Double.isInfinite(x) || Double.isInfinite(y);
+        final boolean isCoordinateBiggerThanMaxDouble = Math.abs(x) > Double.MAX_VALUE || Math.abs(y) > Double.MAX_VALUE;
+        if (isCoordinateNotANumber
+                || isCoordinateInfinite
+                || isCoordinateBiggerThanMaxDouble) {
             throw new IllegalArgumentException("Invalid coordinates: {x = + " + x + ", y = " + y + "}");
         }
     }
