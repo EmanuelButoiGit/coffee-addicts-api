@@ -29,7 +29,7 @@ echo.
 
 :: === CONFIGURABLE VARIABLES ===
 set "JDK_PATH=C:\Program Files\OpenLogic\jdk-17.0.6.10-hotspot\bin\java.exe"
-set "CSV_URL=https://raw.githubusercontent.com/Agilefreaks/test_oop/master/coffee_shops.csv"
+set "CSV_URL=https://raw.githubusercontent.com/EmanuelButoiGit/coffee-addicts-api/refs/heads/main/data/coffee_shops.csv"
 set "JAR_NAME=coffee.addicts.jar"
 set "LOG_FILE=coffee-addicts.log"
 
