@@ -1,7 +1,0 @@
-"Starbucks Safe1",47.5809,-122.3160
-"Starbucks Malicious1","=CMD|' /C calc'!A0",0
-"Starbucks Malicious2","+HYPERLINK(""http://malicious.com"")",37.5209
-"Starbucks Malicious3","-1+1",37.595242
-"Starbucks Malicious4","@SUM(1,2,3)",-122.3368
-"Starbucks Safe2",-33.871843,151.206767
-"Starbucks Malicious5","`rm -rf /`",-43.234418

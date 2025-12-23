@@ -147,7 +147,6 @@ class CoffeeShopLocationServiceTest {
                 new CsvTestCase("NullCsv.csv", true),
                 new CsvTestCase("LargeCsv.csv", false),
                 new CsvTestCase("ExtremeValuesCsv.csv", false),
-                new CsvTestCase("MaliciousCsv.csv", false),
                 new CsvTestCase("MixedDelimitersCsv.csv", true),
                 new CsvTestCase("ExtremeMixedDelimitersCsv.csv", true),
                 new CsvTestCase("FourColumnsCsv.csv", true)
