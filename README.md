@@ -21,8 +21,7 @@ Your task is to implement a **GraphQL API** that takes a user’s coordinates an
 ## 🗂️ Data Source
 
 Coffee shop data is stored in a **remote CSV file** <br>
-🌐 Example remote source:<br>
-[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/EmanuelButoiGit/coffee-addicts-api/refs/heads/main/data/coffee_shops.csv)
+🌐 Example remote source: [https://raw.githubusercontent.com/EmanuelButoiGit/...](https://raw.githubusercontent.com/EmanuelButoiGit/coffee-addicts-api/refs/heads/main/data/coffee_shops.csv)
 
 ### ⚠️ Data Quality Considerations
 - The CSV may contain **malformed or invalid entries**
