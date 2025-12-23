@@ -1,15 +1,15 @@
-package com.emanuel.coffee.addicts.objects;
+package com.emanuel.coffee.addicts.dtos;
 
 import java.util.Objects;
 
-public class CoffeeShopLocation {
+public class CoffeeShopLocationDto {
     private String name;
     private double x;
     private double y;
 
-    public CoffeeShopLocation(){}
+    public CoffeeShopLocationDto(){}
 
-    public CoffeeShopLocation(String name, double x, double y){
+    public CoffeeShopLocationDto(String name, double x, double y){
         this.name = name;
         this.x = x;
         this.y = y;
@@ -42,7 +42,7 @@ public class CoffeeShopLocation {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CoffeeShopLocation that)) return false;
+        if (!(o instanceof CoffeeShopLocationDto that)) return false;
         return Double.compare(that.x, x) == 0 &&
                 Double.compare(that.y, y) == 0 &&
                 Objects.equals(name, that.name);

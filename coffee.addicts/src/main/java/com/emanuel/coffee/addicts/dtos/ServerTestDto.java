@@ -1,14 +1,14 @@
-package com.emanuel.coffee.addicts.objects;
+package com.emanuel.coffee.addicts.dtos;
 
 import java.time.LocalDateTime;
 
-public class ServerTest {
+public class ServerTestDto {
     private String status;
     private String date;
 
-    public ServerTest(){}
+    public ServerTestDto(){}
 
-    public ServerTest(String status) {
+    public ServerTestDto(String status) {
         this.status = status;
         this.date = LocalDateTime.now().toString();
     }

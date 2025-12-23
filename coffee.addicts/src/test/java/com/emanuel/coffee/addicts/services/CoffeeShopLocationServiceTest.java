@@ -1,6 +1,6 @@
 package com.emanuel.coffee.addicts.services;
 
-import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
+import com.emanuel.coffee.addicts.dtos.CoffeeShopLocationDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -36,7 +36,7 @@ class CoffeeShopLocationServiceTest {
         when(restTemplateMock.getForObject(eq(CSV_URL), eq(String.class))).thenReturn(csvData);
     }
 
-    private void assertLocation(CoffeeShopLocation expected, CoffeeShopLocation actual) {
+    private void assertLocation(CoffeeShopLocationDto expected, CoffeeShopLocationDto actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getX(), actual.getX());
         assertEquals(expected.getY(), actual.getY());
@@ -45,11 +45,11 @@ class CoffeeShopLocationServiceTest {
     @Test
     void getLocationsBasedOnCoordinates_GitHubCsv() throws IOException {
         mockCsvResponse("GitHubCsv.csv");
-        CoffeeShopLocation expected1 = new CoffeeShopLocation("Starbucks Seattle2", 47.5869, -122.3368);
-        CoffeeShopLocation expected2 = new CoffeeShopLocation("Starbucks Seattle", 47.5809, -122.3160);
-        CoffeeShopLocation expected3 = new CoffeeShopLocation("Starbucks SF", 37.5209, -122.3340);
+        CoffeeShopLocationDto expected1 = new CoffeeShopLocationDto("Starbucks Seattle2", 47.5869, -122.3368);
+        CoffeeShopLocationDto expected2 = new CoffeeShopLocationDto("Starbucks Seattle", 47.5809, -122.3160);
+        CoffeeShopLocationDto expected3 = new CoffeeShopLocationDto("Starbucks SF", 37.5209, -122.3340);
 
-        List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
+        List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
 
         assertNotNull(result);
         assertEquals(3, result.size());
@@ -61,10 +61,10 @@ class CoffeeShopLocationServiceTest {
     @Test
     void getLocationsBasedOnCoordinates_TwoEntriesCsv() throws IOException {
         mockCsvResponse("TwoEntriesCsv.csv");
-        CoffeeShopLocation expected1 = new CoffeeShopLocation("Starbucks Seattle2", 47.5869, -122.3368);
-        CoffeeShopLocation expected2 = new CoffeeShopLocation("Starbucks Seattle", 47.5809, -122.3160);
+        CoffeeShopLocationDto expected1 = new CoffeeShopLocationDto("Starbucks Seattle2", 47.5869, -122.3368);
+        CoffeeShopLocationDto expected2 = new CoffeeShopLocationDto("Starbucks Seattle", 47.5809, -122.3160);
 
-        List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
+        List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -76,7 +76,7 @@ class CoffeeShopLocationServiceTest {
     void getLocationsBasedOnCoordinates_WhenRemoteCsvUnavailable() {
         when(restTemplateMock.getForObject(eq(CSV_URL), eq(String.class))).thenReturn(null);
 
-        List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
+        List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -87,7 +87,7 @@ class CoffeeShopLocationServiceTest {
         when(restTemplateMock.getForObject(eq(CSV_URL), eq(String.class)))
                 .thenThrow(new RuntimeException("HTTP 404"));
 
-        List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
+        List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -126,7 +126,7 @@ class CoffeeShopLocationServiceTest {
         for (double[] coord : nonFaultyCoordinates) {
             final double x = coord[0];
             final double y = coord[1];
-            final List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(x, y);
+            final List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(x, y);
             assertNotNull(result);
             assertFalse(result.isEmpty());
         }
@@ -158,7 +158,7 @@ class CoffeeShopLocationServiceTest {
     void getLocationsBasedOnCoordinates_AllCsvs(CsvTestCase csvTestCase) throws IOException {
         mockCsvResponse(csvTestCase.fileName());
 
-        final List<CoffeeShopLocation> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
+        final List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
 
         assertNotNull(result, "Service returned null for CSV: " + csvTestCase.fileName());
 

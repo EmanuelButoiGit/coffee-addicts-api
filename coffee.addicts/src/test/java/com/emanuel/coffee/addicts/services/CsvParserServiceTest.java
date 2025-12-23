@@ -1,6 +1,6 @@
 package com.emanuel.coffee.addicts.services;
 
-import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
+import com.emanuel.coffee.addicts.dtos.CoffeeShopLocationDto;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -40,7 +40,7 @@ class CsvParserServiceTest {
     @MethodSource("csvTestCases")
     void extractCoffeeShopLocationsParameterized(CsvTestCase csvTestCase) throws IOException {
         final String csvData = ReadCsvFileHelper.readCsvFile(csvTestCase.fileName());
-        final Set<CoffeeShopLocation> result = csvParserService.parseCsvLocations(csvData, new HashSet<>());
+        final Set<CoffeeShopLocationDto> result = csvParserService.parseCsvLocations(csvData, new HashSet<>());
 
         if (csvTestCase.expectEmpty()) {
             assertTrue(result.isEmpty(), "Expected empty result for: " + csvTestCase.fileName());
