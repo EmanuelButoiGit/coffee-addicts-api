@@ -20,8 +20,7 @@ Your task is to implement a **GraphQL API** that takes a user’s coordinates an
 
 ## 🗂️ Data Source
 
-Coffee shop data is stored in a **remote CSV file** with the following columns:
-Name,X,Y
+Coffee shop data is stored in a **remote CSV file** 
 🌐 Example remote source:
 https://raw.githubusercontent.com/
 
