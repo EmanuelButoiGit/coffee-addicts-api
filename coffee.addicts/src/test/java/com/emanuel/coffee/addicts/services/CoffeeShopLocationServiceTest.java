@@ -83,14 +83,13 @@ class CoffeeShopLocationServiceTest {
     }
 
     @Test
-    void getLocationsBasedOnCoordinates_WhenHttpError() {
+    void getLocationsBasedOnCoordinates_WhenHttpError_ShouldThrowException() {
         when(restTemplateMock.getForObject(eq(CSV_URL), eq(String.class)))
                 .thenThrow(new RuntimeException("HTTP 404"));
 
-        List<CoffeeShopLocationDto> result = coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4);
-
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        assertThrows(RuntimeException.class, () ->
+                coffeeShopLocationService.getLocationsBasedOnCoordinates(47.6, -122.4)
+        );
     }
 
     @Test
