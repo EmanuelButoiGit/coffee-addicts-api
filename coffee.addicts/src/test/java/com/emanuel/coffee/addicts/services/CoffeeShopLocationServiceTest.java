@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CoffeeShopLocationServiceTest {
-    private static final String CSV_URL = "https://raw.githubusercontent.com/Agilefreaks/test_oop/master/coffee_shops.csv";
+    private static final String CSV_URL = "https://raw.githubusercontent.com/EmanuelButoiGit/coffee-addicts-api/refs/heads/main/data/coffee_shops.csv";
     private RestTemplate restTemplateMock;
     private CoffeeShopLocationService coffeeShopLocationService;
 
