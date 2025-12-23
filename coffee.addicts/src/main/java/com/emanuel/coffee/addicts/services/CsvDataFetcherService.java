@@ -19,11 +19,6 @@ public class CsvDataFetcherService {
     }
 
     public String getCsvData() {
-        try {
-            return restTemplate.getForObject(csvUrl, String.class);
-        } catch (Exception e) {
-            logger.error("Failed to fetch CSV data from URL {}: {}", csvUrl, e.getMessage(), e);
-            return "";
-        }
+        return restTemplate.getForObject(csvUrl, String.class);
     }
 }

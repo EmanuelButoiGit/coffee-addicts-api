@@ -1,6 +1,6 @@
 package com.emanuel.coffee.addicts.controllers;
 
-import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
+import com.emanuel.coffee.addicts.dtos.CoffeeShopLocationDto;
 import com.emanuel.coffee.addicts.services.CoffeeShopLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -17,17 +17,17 @@ public class CoffeeShopLocationController {
     CoffeeShopLocationService coffeeShopLocationService;
 
     @QueryMapping
-    public List<CoffeeShopLocation> getAllFakeLocations(){
-        return Collections.singletonList(new CoffeeShopLocation("Cafea Buna", 12, 122));
+    public List<CoffeeShopLocationDto> getAllFakeLocations(){
+        return Collections.singletonList(new CoffeeShopLocationDto("Cafea Buna", 12, 122));
     }
 
     @QueryMapping
-    public Set<CoffeeShopLocation> getAllLocations() {
+    public Set<CoffeeShopLocationDto> getAllLocations() {
         return coffeeShopLocationService.getAllLocations();
     }
 
     @QueryMapping
-    public List<CoffeeShopLocation> getLocationsBasedOnCoordinates(@Argument double x, @Argument double y) {
+    public List<CoffeeShopLocationDto> getLocationsBasedOnCoordinates(@Argument double x, @Argument double y) {
         return coffeeShopLocationService.getLocationsBasedOnCoordinates(x, y);
     }
 }

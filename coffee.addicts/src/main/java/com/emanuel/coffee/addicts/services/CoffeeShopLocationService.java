@@ -1,7 +1,7 @@
 package com.emanuel.coffee.addicts.services;
 
-import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
-import com.emanuel.coffee.addicts.objects.Result;
+import com.emanuel.coffee.addicts.dtos.CoffeeShopLocationDto;
+import com.emanuel.coffee.addicts.dtos.ResultDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,22 +19,27 @@ public class CoffeeShopLocationService {
         this.csvParserService = csvParserService;
     }
 
-    public Set<CoffeeShopLocation> getAllLocations() {
+    public Set<CoffeeShopLocationDto> getAllLocations() {
         final String csvData = csvDataFetcherService.getCsvData();
-        final Set<CoffeeShopLocation> coffeeShopLocations = new HashSet<>();
+        final Set<CoffeeShopLocationDto> coffeeShopLocations = new HashSet<>();
         return csvParserService.parseCsvLocations(csvData, coffeeShopLocations);
     }
 
-    public List<CoffeeShopLocation> getLocationsBasedOnCoordinates(double x, double y) {
+    public List<CoffeeShopLocationDto> getLocationsBasedOnCoordinates(double x, double y) {
         validateCoordinate(x, y);
-        final Set<CoffeeShopLocation> locationSet = getAllLocations();
+        final Set<CoffeeShopLocationDto> locationSet = getAllLocations();
         if (locationSet.isEmpty()) {
             return Collections.emptyList();
         }
-        final List<CoffeeShopLocation> locations = new ArrayList<>(locationSet);
-        List<Result> resultMap = new ArrayList<>();
+        final List<CoffeeShopLocationDto> locations = new ArrayList<>(locationSet);
+        List<ResultDto> resultMap = new ArrayList<>();
+        computeResultMap(x, y, locations, resultMap);
+        return getNearestLocations(locations, resultMap);
+    }
+
+    private void computeResultMap(double x, double y, List<CoffeeShopLocationDto> locations, List<ResultDto> resultMap) {
         for (int i = 0; i < locations.size(); i++) {
-            final CoffeeShopLocation location = locations.get(i);
+            final CoffeeShopLocationDto location = locations.get(i);
             if (location == null) {
                 logger.warn("Skipping null location at index {}", i);
                 continue;
@@ -42,15 +47,18 @@ public class CoffeeShopLocationService {
             try {
                 validateCoordinate(location.getX(), location.getY());
                 final double distance = calculateDistance(x, y, location.getX(), location.getY());
-                resultMap.add(new Result(distance, i));
+                resultMap.add(new ResultDto(distance, i));
             } catch (NullPointerException | IllegalArgumentException e) {
                 logger.warn("Skipping invalid location at index {}: {}", i, e.getMessage());
             } catch (Exception e) {
                 logger.error("Error calculating distance for location at index {}: {}", i, location, e);
             }
         }
-        resultMap.sort(Comparator.comparingDouble(Result::distance));
-        List<CoffeeShopLocation> nearestLocations = new ArrayList<>();
+    }
+
+    private List<CoffeeShopLocationDto> getNearestLocations(List<CoffeeShopLocationDto> locations, List<ResultDto> resultMap) {
+        resultMap.sort(Comparator.comparingDouble(ResultDto::distance));
+        List<CoffeeShopLocationDto> nearestLocations = new ArrayList<>();
         for (int i = 0; i < Math.min(3, resultMap.size()); i++) {
             nearestLocations.add(locations.get(resultMap.get(i).position()));
         }
@@ -58,9 +66,12 @@ public class CoffeeShopLocationService {
     }
 
     private void validateCoordinate(double x, double y) {
-        if (Double.isNaN(x) ||Double.isNaN(y)
-                || Double.isInfinite(x) || Double.isInfinite(y)
-                || Math.abs(x) > Double.MAX_VALUE || Math.abs(y) > Double.MAX_VALUE) {
+        final boolean isCoordinateNotANumber = Double.isNaN(x) || Double.isNaN(y);
+        final boolean isCoordinateInfinite = Double.isInfinite(x) || Double.isInfinite(y);
+        final boolean isCoordinateBiggerThanMaxDouble = Math.abs(x) > Double.MAX_VALUE || Math.abs(y) > Double.MAX_VALUE;
+        if (isCoordinateNotANumber
+                || isCoordinateInfinite
+                || isCoordinateBiggerThanMaxDouble) {
             throw new IllegalArgumentException("Invalid coordinates: {x = + " + x + ", y = " + y + "}");
         }
     }

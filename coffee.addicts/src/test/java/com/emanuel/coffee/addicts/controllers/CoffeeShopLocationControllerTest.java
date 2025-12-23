@@ -1,6 +1,6 @@
 package com.emanuel.coffee.addicts.controllers;
 
-import com.emanuel.coffee.addicts.objects.CoffeeShopLocation;
+import com.emanuel.coffee.addicts.dtos.CoffeeShopLocationDto;
 import com.emanuel.coffee.addicts.services.CoffeeShopLocationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class CoffeeShopLocationControllerTest {
     @Test
     void getAllLocations() {
         // Arrange
-        final CoffeeShopLocation expectedLocation = new CoffeeShopLocation();
+        final CoffeeShopLocationDto expectedLocation = new CoffeeShopLocationDto();
         expectedLocation.setName("Ted's Coffee");
         expectedLocation.setX(1.0);
         expectedLocation.setY(2.0);
@@ -31,11 +31,11 @@ class CoffeeShopLocationControllerTest {
                 .thenReturn(Set.of(expectedLocation));
 
         // Act
-        final List<CoffeeShopLocation> result = graphQlTester
+        final List<CoffeeShopLocationDto> result = graphQlTester
                 .documentName("getAllLocations")
                 .execute()
                 .path("getAllLocations")
-                .entityList(CoffeeShopLocation.class)
+                .entityList(CoffeeShopLocationDto.class)
                 .get();
 
         // Assert
