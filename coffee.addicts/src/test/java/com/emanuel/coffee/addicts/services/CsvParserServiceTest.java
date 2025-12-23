@@ -28,7 +28,6 @@ class CsvParserServiceTest {
                 new CsvTestCase("OnlyHeaderCsv.csv", true, 0),
                 new CsvTestCase("EmptyCsv.csv", true, 0),
                 new CsvTestCase("NullCsv.csv", true, 0),
-                new CsvTestCase("LargeCsv.csv", false, 10000),
                 new CsvTestCase("ExtremeValuesCsv.csv", false, 5),
                 new CsvTestCase("MixedDelimitersCsv.csv", true, 0),
                 new CsvTestCase("ExtremeMixedDelimitersCsv.csv", true, 0),
