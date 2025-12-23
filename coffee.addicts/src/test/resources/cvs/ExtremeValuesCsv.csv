@@ -1,0 +1,6 @@
+Name,Latitude,Longitude
+Starbucks Extreme1,1e+308,1e+308
+Starbucks Extreme2,-1e+308,-1e+308
+Starbucks Extreme3,1e-308,1e-308
+Starbucks Extreme4,-1e-308,-1e-308
+Starbucks Extreme5,1e+308,-1e+308
